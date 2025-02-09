@@ -58,3 +58,15 @@ Spécification de l'API - Puissance 4
 6/ Reinitiliser une partie 
     Endpoint : reset_game.php
     Méthode : POST
+
+7/ Quitter une partie
+    Endpoint : leave_game.php
+    Méthode : POST
+    Entrée: {
+        "game_id": 69,
+        "player": "Dylan"
+    }
+    Sortie: {
+        "game_id": 69,
+        "status": "player Dylan has left the game"
+    }
