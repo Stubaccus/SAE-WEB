@@ -89,21 +89,31 @@ Spécification de l'API - Puissance 4
     }
 
 8/ Liste des parties existantes
-Endpoint : list_games.php
-Méthode : GET
-Sortie :{
-    "games": [
-        {
-            "game_id": 69,
-            "player1": "Dylan",
-            "player2": null,
-            "status": "waiting for player"
-        },
-        {
-            "game_id": 70,
-            "player1": "Alice",
-            "player2": "Bob",
-            "status": "in progress"
-        }
-    ]
-}
+    Endpoint : list_games.php
+    Méthode : GET
+    Sortie :{
+        "games": [
+            {
+                "game_id": 69,
+                "player1": "Dylan",
+                "player2": null,
+                "status": "waiting for player"
+            },
+            {
+                "game_id": 70,
+                "player1": "Seb",
+                "player2": "Pierre",
+                "status": "in progress"
+            }
+        ]
+    }
+
+9/ Vérifier si une colonne est pleine
+    Endpoint : check_column_full.php
+    Méthode : GET
+    Paramètres : ?game_id=69&column=3
+    Sortie :{
+        "game_id": 69,
+        "column": 3,
+        "is_full": false
+    }
