@@ -1,0 +1,60 @@
+Spécification de l'API - Puissance 4
+
+1/ Créer une partie
+    Endpoint : create_game.php
+    Méthode : POST
+    Entrées :{
+    "player1": "Dylan",
+    "player2": "Théo"
+    }
+    Sortie: {
+        game_Id: 69,
+        status:"waiting move"
+    }
+
+2/ Rejoindre une partie existante
+    Endpoint : join_game.php
+    Méthode : POST
+    Entrées :{
+    "game_Id": 69,
+    "player": "Dylan"
+    }
+    Sortie:{
+        "game_Id": 69,
+        status: "in progress"
+    }
+
+3/ Jouer un coup
+    Endpoint : play_move.php
+    Méthode : POST
+    Entrées :{
+    "game_Id": 69,
+    "player": "Dylan",
+    "column": 3
+    }
+    Sortie:{
+    "game_Id": 69,
+    "column": 3,
+    "status": "move registered",
+    "next_player": "Theo"
+    }
+
+4/ Récupérer l'etat d'une partie
+    Endpoint : get_game.php
+    Méthode : GET
+    Paramètres : ?game_id=123
+    Sortie :{
+
+    }
+
+5/ Déterminer si la partie est terminée
+    Endpoint : check_winner.php
+    Méthode : GET
+    Paramètres : ?game_id=123
+    Sortie : {
+
+    }
+
+6/ Reinitiliser une partie 
+    Endpoint : reset_game.php
+    Méthode : POST
