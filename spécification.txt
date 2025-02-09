@@ -39,25 +39,42 @@ Spécification de l'API - Puissance 4
     "next_player": "Theo"
     }
 
-4/ Récupérer l'etat d'une partie
+4/ Récupérer l'état d'une partie
     Endpoint : get_game.php
     Méthode : GET
     Paramètres : ?game_id=123
     Sortie :{
-
+        "game_id": 69,
+        "board": [
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 1, 0, 0, 0],
+            [0, 0, 2, 1, 0, 0, 0],
+            [0, 0, 2, 1, 0, 0, 0],
+            [0, 0, 2, 1, 0, 0, 0]
+        ]
     }
 
 5/ Déterminer si la partie est terminée
     Endpoint : check_winner.php
     Méthode : GET
-    Paramètres : ?game_id=123
+    Paramètres : ?game_id=69
     Sortie : {
-
+        "game_id": 69,
+        "winner": "Dylan",
+        "status": "Game is over"
     }
 
 6/ Reinitiliser une partie 
     Endpoint : reset_game.php
     Méthode : POST
+    Entrée :{
+        "game_id": 69
+    }
+    Sortie :{
+        "game_id": 69,
+        "status": "The current game has been reinitialized"
+    }
 
 7/ Quitter une partie
     Endpoint : leave_game.php
@@ -68,5 +85,25 @@ Spécification de l'API - Puissance 4
     }
     Sortie: {
         "game_id": 69,
-        "status": "player Dylan has left the game"
+        "status": "Player Dylan has left the game"
     }
+
+8/ Liste des parties existantes
+Endpoint : list_games.php
+Méthode : GET
+Sortie :{
+    "games": [
+        {
+            "game_id": 69,
+            "player1": "Dylan",
+            "player2": null,
+            "status": "waiting for player"
+        },
+        {
+            "game_id": 70,
+            "player1": "Alice",
+            "player2": "Bob",
+            "status": "in progress"
+        }
+    ]
+}
