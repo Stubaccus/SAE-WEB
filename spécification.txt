@@ -8,7 +8,7 @@ Spécification de l'API - Puissance 4
     "player2": "Théo"
     }
     Sortie: {
-        game_Id: 69,
+        game_id: 69,
         status:"waiting move"
     }
 
@@ -16,11 +16,11 @@ Spécification de l'API - Puissance 4
     Endpoint : join_game.php
     Méthode : POST
     Entrées :{
-    "game_Id": 69,
+    "game_id": 69,
     "player": "Dylan"
     }
     Sortie:{
-        "game_Id": 69,
+        "game_id": 69,
         status: "in progress"
     }
 
@@ -28,12 +28,12 @@ Spécification de l'API - Puissance 4
     Endpoint : play_move.php
     Méthode : POST
     Entrées :{
-    "game_Id": 69,
+    "game_id": 69,
     "player": "Dylan",
     "column": 3
     }
     Sortie:{
-    "game_Id": 69,
+    "game_id": 69,
     "column": 3,
     "status": "move registered",
     "next_player": "Theo"
@@ -42,7 +42,7 @@ Spécification de l'API - Puissance 4
 4/ Récupérer l'état d'une partie
     Endpoint : get_game.php
     Méthode : GET
-    Paramètres : ?game_id=123
+    Paramètres : ?game_id=69
     Sortie :{
         "game_id": 69,
         "board": [
