@@ -1,13 +1,13 @@
-CREATE TABLE IF NOT EXISTS games (                                                                                                           -- tables des parties
+CREATE TABLE IF NOT EXISTS games(                                                                                                           -- tables des parties
     id INTEGER PRIMARY KEY AUTOINCREMENT,                                                                                                   -- id unique de la partie
     name TEXT NOT NULL,                                                                                                                     -- nom de la partie 
     status TEXT CHECK(status IN ('waiting', 'play', 'over')) DEFAULT 'waiting',                                                             -- statue de la partie
     player1 TEXT NOT NULL,                                                                                                                  -- nom du joueur 1
     player1_role TEXT CHECK(player1_role IN ('human', 'AI')) NOT NULL,                                                                      -- role du joueur 1
     player2 TEXT,                                                                                                                           -- nom du joueur 2
-    player2_role TEXT CHECK(player2_role IN ('human', 'AI')) NOT NULL,                                                                               -- role du joueur 2
-    FOREIGN KEY (board_id) REFERENCES board(),                                                                                              -- plateau de jeu
-    player_turn INTEGER DEFAULT 1                                                                                                          -- tour du joueur
+    player2_role TEXT CHECK(player2_role IN ('human', 'AI')),                                                                               -- role du joueur 2
+    board TEXT NOT NULL DEFAULT '[ [0,0,0,0,0,0,0], [0,0,0,0,0,0,0], [0,0,0,0,0,0,0], [0,0,0,0,0,0,0], [0,0,0,0,0,0,0], [0,0,0,0,0,0,0] ]', -- plateau de jeu
+    player_turn INTEGER DEFAULT 1                                                                                                           -- tour du joueur
 );
 
 CREATE TABLE IF NOT EXISTS moves (                                                                                                          -- table des mouvements (la ou sont stocké les coups joué)
@@ -25,12 +25,4 @@ CREATE TABLE IF NOT EXISTS players (                                            
     player_name TEXT,                                                                                                                       -- nom du joueur
     private_key TEXT,                                                                                                                       -- clé privée du joueur
     FOREIGN KEY (game_id) REFERENCES games(id)                                                                                              -- lien avec la table games
-);
-
-CREATE TABLE IF NOT EXISTS board (                                                                                                          -- table du plateau
-    x INTEGER,
-    y INTEGER,
-    CONSTRAINT coords PRIMARY KEY (x, y),
-    val INTEGER DEFAULT 0,
-    FOREIGN KEY (game_id) REFERENCES games(id)
 );
