@@ -3,12 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Jeu du Puissance 4 JvJ, JvIA, ou IAvIA">
-    <meta name="author" content="CASTRE Théo, BRUN Dylan">
     <title>Puissance 4</title>
     <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
-    
+    <h1>Puissance 4</h1>
+
+    <div id="game-container">
+        <div id="game-info">
+            <button onclick="createGame()">Créer une partie</button>
+            <input type="text" id="gameId" placeholder="ID de la partie">
+            <button onclick="joinGame()">Rejoindre</button>
+        </div>
+
+        <div id="game-board"></div>
+        <p id="status-message"></p>
+    </div>
 </body>
 </html>
