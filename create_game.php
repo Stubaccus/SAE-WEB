@@ -1,9 +1,12 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 header("Content-Type: application/json");
 
 // Vérifie que la méthode est bien POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header("Location: index.html");
+    echo json_encode(["error" => 1, "error_message" => "Méthode non autorisée"]);
     exit;
 }
 
