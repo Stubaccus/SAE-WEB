@@ -23,20 +23,9 @@ foreach ($required_fields as $field) {
 }
 
 $db = new SQLite3("puissance4.db");
-
-$stmt = $db->prepare("SELECT * FROM games WHERE id = :game_id AND game_path = :game_path");
+$stmt = $db->prepare("DELETE FROM games WHERE id = :game_id AND game_path = :game_path");
 $stmt->bindValue(":game_id", $data["game_id"], SQLITE3_INTEGER);
-$stmt->bindValue(":game_path", $data["game_path"], SQLITE3_TEXT);
-$result = $stmt->execute();
-$game = $result->fetchArray(SQLITE3_ASSOC);
-
-if (!$game) {
-    echo json_encode(["error" => 1, "error_message" => "Partie introuvable"]);
-    exit;
-}
-
-$stmt = $db->prepare("DELETE FROM games WHERE id = :game_id");
-$stmt->bindValue(":game_id", $data["game_id"], SQLITE3_INTEGER);
+stmt->bindValue(":game_path", $data["game_path"], SQLITE3_TEXT);
 $result = $stmt->execute();
 
 if ($result) {

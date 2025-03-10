@@ -23,7 +23,6 @@ foreach ($required_fields as $field) {
 }
 
 $db = new SQLite3("puissance4.db");
-
 $stmt = $db->prepare("SELECT * FROM games WHERE id = :game_id AND game_path = :game_path");
 $stmt->bindValue(":game_id", $data["game_id"], SQLITE3_INTEGER);
 $stmt->bindValue(":game_path", $data["game_path"], SQLITE3_TEXT);
@@ -35,7 +34,8 @@ if (!$game) {
     exit;
 }
 
-$private_key = ($data["player"] == $game["player_turn"]) ? "@C2D24#2" : null;
+$last_move = isset($game["last_move"]) ? $game["last_move"] : null;
+$private_key = ($data["player"] == $game["player_turn"]) ? $game["private_key"] : null;
 
 echo json_encode([
     "error" => 0,
@@ -51,7 +51,7 @@ echo json_encode([
     "player2_role" => $game["player2_role"],
     "player2_path" => $game["player2_path"],
     "player_turn" => $game["player_turn"],
-    "last_move" => $game["last_move"],
+    "last_move" => $last_move,
     "private_key" => $private_key
 ]);
 ?>

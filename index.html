@@ -9,16 +9,22 @@
 </head>
 <body>
     <h1>Puissance 4</h1>
-
-    <div id="game-container">
-        <div id="game-info">
-            <button onclick="createGame()">Créer une partie</button>
-            <input type="text" id="gameId" placeholder="ID de la partie">
-            <button onclick="joinGame()">Rejoindre</button>
-        </div>
-
-        <div id="game-board"></div>
-        <p id="status-message"></p>
+    
+    <div>
+        <h3>Créer une Partie</h3>
+        <input type="text" id="game_name" placeholder="Nom de la partie">
+        <button class="btn" onclick="createGame()">Créer</button>
+    </div>
+    
+    <div>
+        <h3>Parties Disponibles</h3>
+        <ul id="games_list"></ul>
+    </div>
+    
+    <div id="game_board" style="display: none;">
+        <h3>Plateau</h3>
+        <div id="board" class="board"></div>
+        <button class="btn" onclick="refreshGame()">Rafraîchir</button>
     </div>
 </body>
 </html>

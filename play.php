@@ -23,7 +23,6 @@ foreach ($required_fields as $field) {
 }
 
 $db = new SQLite3("puissance4.db");
-
 $stmt = $db->prepare("SELECT * FROM games WHERE id = :game_id AND game_path = :game_path");
 $stmt->bindValue(":game_id", $data["game_id"], SQLITE3_INTEGER);
 $stmt->bindValue(":game_path", $data["game_path"], SQLITE3_TEXT);
@@ -35,7 +34,7 @@ if (!$game) {
     exit;
 }
 
-if ($data["player"] != $game["player_turn"] || $data["private_key"] !== "@C2D24#2") {
+if ($data["player"] != $game["player_turn"] || $data["private_key"] !== $game["private_key"]) {
     echo json_encode(["error" => 1, "error_message" => "Action non autorisée"]);
     exit;
 }
@@ -54,27 +53,6 @@ for ($row = 5; $row >= 0; $row--) {
     }
 }
 
-$winner = check_winner($board, $data["player"]);
-$status = $winner ? "over" : "play";
-$next_player = $winner ? $data["player"] : ($data["player"] == 1 ? 2 : 1);
-
-$stmt = $db->prepare("UPDATE games SET board = :board, status = :status, player_turn = :next_player, last_move = :column WHERE id = :game_id");
-$stmt->bindValue(":board", json_encode($board), SQLITE3_TEXT);
-$stmt->bindValue(":status", $status, SQLITE3_TEXT);
-$stmt->bindValue(":next_player", $next_player, SQLITE3_INTEGER);
-$stmt->bindValue(":column", $column, SQLITE3_INTEGER);
-$stmt->bindValue(":game_id", $data["game_id"], SQLITE3_INTEGER);
-$result = $stmt->execute();
-
-echo json_encode([
-    "error" => 0,
-    "game_id" => $game["id"],
-    "status" => $status,
-    "board" => $board,
-    "player_turn" => $next_player,
-    "winner" => $winner ? $data["player"] : null
-]);
-
 function check_winner($board, $player) {
     for ($r = 0; $r < 6; $r++) {
         for ($c = 0; $c < 7; $c++) {
@@ -86,4 +64,28 @@ function check_winner($board, $player) {
     }
     return false;
 }
+
+$winner = check_winner($board, $data["player"]);
+$status = $winner ? "over" : "play";
+$next_player = $winner ? $data["player"] : ($data["player"] == 1 ? 2 : 1);
+
+$new_private_key = bin2hex(random_bytes(16));
+$stmt = $db->prepare("UPDATE games SET board = :board, status = :status, player_turn = :next_player, last_move = :column, private_key = :private_key WHERE id = :game_id");
+$stmt->bindValue(":board", json_encode($board), SQLITE3_TEXT);
+$stmt->bindValue(":status", $status, SQLITE3_TEXT);
+$stmt->bindValue(":next_player", $next_player, SQLITE3_INTEGER);
+$stmt->bindValue(":column", $column, SQLITE3_INTEGER);
+$stmt->bindValue(":private_key", $new_private_key, SQLITE3_TEXT);
+$stmt->bindValue(":game_id", $data["game_id"], SQLITE3_INTEGER);
+$stmt->execute();
+
+echo json_encode([
+    "error" => 0,
+    "game_id" => $game["id"],
+    "status" => $status,
+    "board" => $board,
+    "player_turn" => $next_player,
+    "winner" => $winner ? $data["player"] : null,
+    "private_key" => $new_private_key
+]);
 ?>
