@@ -1,3 +1,61 @@
 body { font-family: Arial, sans-serif; text-align: center; }
         .board { display: inline-block; margin-top: 20px; }
         .btn { margin: 5px; padding: 10px; cursor: pointer; border: 1px solid black; background-color: lightgray; }
+        .board {
+                display: inline-grid;
+                grid-template-columns: repeat(7, 50px);
+                gap: 5px;
+                background: blue;
+                padding: 10px;
+            }
+            
+            .cell {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                background: white;
+                cursor: pointer;
+            }
+            
+            .cell.player1 {
+                background: red;
+            }
+            
+            .cell.player2 {
+                background: yellow;
+            }
+            
+            .column-selector {
+                display: flex;
+                gap: 5px;
+                margin-bottom: 10px;
+            }
+            
+            .column-btn {
+                width: 50px;
+                height: 30px;
+                cursor: pointer;
+                background: #ddd;
+            }
+            
+            .status {
+                margin: 10px 0;
+            }
+            
+            .hidden {
+                display: none;
+            }
+            #game_board {
+                margin-top: 20px;
+                padding: 15px;
+                border: 2px solid #333;
+                border-radius: 10px;
+            }
+            
+            #board {
+                background: #1a73e8;
+                padding: 10px;
+                border-radius: 8px;
+                margin: 10px 0;
+            }
+        
