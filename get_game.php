@@ -28,6 +28,7 @@ $stmt->bindValue(":game_id", $data["game_id"], SQLITE3_INTEGER);
 $stmt->bindValue(":game_path", $data["game_path"], SQLITE3_TEXT);
 $result = $stmt->execute();
 $game = $result->fetchArray(SQLITE3_ASSOC);
+$private_key = ($data["player"] == $game["player_turn"]) ? $game["private_key"] : null;
 
 if (!$game) {
     echo json_encode(["error" => 1, "error_message" => "Partie introuvable"]);
@@ -35,7 +36,8 @@ if (!$game) {
 }
 
 $last_move = isset($game["last_move"]) ? $game["last_move"] : null;
-$private_key = ($data["player"] == $game["player_turn"]) ? $game["private_key"] : null;
+
+error_log("Game ID: " . $game["id"] . " - Player: " . $data["player"] . " - Private Key: " . json_encode($game["private_key"]));
 
 echo json_encode([
     "error" => 0,
@@ -43,7 +45,7 @@ echo json_encode([
     "game_name" => $game["name"],
     "game_path" => $game["game_path"],
     "status" => $game["status"],
-    "board" => json_decode($game["board"]),
+    "board" => json_decode($game["board"], true),
     "player1" => $game["player1"],
     "player1_role" => $game["player1_role"],
     "player1_path" => $game["player1_path"],

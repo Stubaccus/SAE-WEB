@@ -24,7 +24,7 @@ foreach ($required_fields as $field) {
 $db = new SQLite3("puissance4.db");
 $stmt = $db->prepare("SELECT * FROM games WHERE id = :game_id AND game_path = :game_path");
 $stmt->bindValue(":game_id", $data["game_id"], SQLITE3_INTEGER);
-stmt->bindValue(":game_path", $data["game_path"], SQLITE3_TEXT);
+$stmt->bindValue(":game_path", $data["game_path"], SQLITE3_TEXT);
 $result = $stmt->execute();
 $game = $result->fetchArray(SQLITE3_ASSOC);
 
@@ -39,10 +39,11 @@ if ($game["status"] !== "waiting") {
 }
 
 $stmt = $db->prepare("UPDATE games SET player2 = :player2, player2_role = :player2_role, player2_path = :player2_path, status = 'play' WHERE id = :game_id");
+$stmt->bindValue(":game_id", $data["game_id"], SQLITE3_INTEGER);
 $stmt->bindValue(":player2", $data["player2"], SQLITE3_TEXT);
 $stmt->bindValue(":player2_role", $data["player2_role"], SQLITE3_TEXT);
 $stmt->bindValue(":player2_path", $data["player2_path"], SQLITE3_TEXT);
-$stmt->bindValue(":game_id", $data["game_id"], SQLITE3_INTEGER);
+$stmt->bindValue(":private_key", bin2hex(random_bytes(16)), SQLITE3_TEXT);
 $result = $stmt->execute();
 
 if ($result) {

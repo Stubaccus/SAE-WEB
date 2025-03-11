@@ -25,7 +25,7 @@ foreach ($required_fields as $field) {
 }
 
 $player2 = $data["player2"] ?? "";
-$player2_role = $data["player2_role"] ?? "";
+$player2_role = $data["player2_role"] ?? ($player2 !== "" ? "human" : null);
 $player2_path = $data["player2_path"] ?? "";
 $status = ($player2 !== "") ? "play" : "waiting";
 
@@ -38,7 +38,8 @@ $private_key_p2 = generatePrivateKey();
 $db = new SQLite3("puissance4.db");
 $empty_board = json_encode(array_fill(0, 6, array_fill(0, 7, 0)));
 
-$stmt = $db->prepare("INSERT INTO games (name, game_path, player1, player1_role, player1_path, player2, player2_role, player2_path, board, status, player_turn) VALUES (:name, :game_path, :player1, :player1_role, :player1_path, :player2, :player2_role, :player2_path, :board, :status, 1)");
+$private_key = generatePrivateKey();
+$stmt = $db->prepare("INSERT INTO games (name, game_path, player1, player1_role, player1_path, player2, player2_role, player2_path, board, status, player_turn, private_key) VALUES (:name, :game_path, :player1, :player1_role, :player1_path, :player2, :player2_role, :player2_path, :board, :status, 1, :private_key)");
 
 $stmt->bindValue(":name", $data["game_name"], SQLITE3_TEXT);
 $stmt->bindValue(":game_path", $data["game_path"], SQLITE3_TEXT);
@@ -50,6 +51,7 @@ $stmt->bindValue(":player2_role", $player2_role, SQLITE3_TEXT);
 $stmt->bindValue(":player2_path", $player2_path, SQLITE3_TEXT);
 $stmt->bindValue(":board", $empty_board, SQLITE3_TEXT);
 $stmt->bindValue(":status", $status, SQLITE3_TEXT);
+$stmt->bindValue(":private_key", $private_key, SQLITE3_TEXT);
 
 if (!$stmt->execute()) {
     echo json_encode(["error" => 1, "error_message" => "Erreur lors de la création de la partie"]);
@@ -57,13 +59,20 @@ if (!$stmt->execute()) {
 }
 
 $game_id = $db->lastInsertRowID();
-$stmt = $db->prepare("INSERT INTO players (game_id, player_name, private_key) VALUES (:game_id, :player1, :private_key_p1), (:game_id, :player2, :private_key_p2)");
+$stmt = $db->prepare("INSERT INTO players (game_id, player_name, private_key) VALUES (:game_id, :player1, :private_key_p1)");
 $stmt->bindValue(":game_id", $game_id, SQLITE3_INTEGER);
 $stmt->bindValue(":player1", $data["player1"], SQLITE3_TEXT);
 $stmt->bindValue(":private_key_p1", $private_key_p1, SQLITE3_TEXT);
-$stmt->bindValue(":player2", $player2, SQLITE3_TEXT);
-$stmt->bindValue(":private_key_p2", $private_key_p2, SQLITE3_TEXT);
 $stmt->execute();
+
+if (!empty($player2)) {
+    $stmt = $db->prepare("INSERT INTO players (game_id, player_name, private_key) VALUES (:game_id, :player2, :private_key_p2)");
+    $stmt->bindValue(":game_id", $game_id, SQLITE3_INTEGER);
+    $stmt->bindValue(":player2", $player2, SQLITE3_TEXT);
+    $stmt->bindValue(":private_key_p2", $private_key_p2, SQLITE3_TEXT);
+    $stmt->execute();
+}
+
 
 echo json_encode([
     "error" => 0,

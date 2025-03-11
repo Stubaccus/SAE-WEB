@@ -7,11 +7,12 @@ CREATE TABLE IF NOT EXISTS games(
     player1_role TEXT CHECK(player1_role IN ('human', 'AI')) NOT NULL,                                                                      -- role du joueur 1
     player1_path TEXT,
     player2 TEXT,                                                                                                                           -- nom du joueur 2
-    player2_role TEXT CHECK(player2_role IN ('human', 'AI')),                                                                               -- role du joueur 2
+    player2_role TEXT CHECK(player2_role IN ('human', 'AI')) DEFAULT NULL,                                                                               -- role du joueur 2
     player2_path TEXT,
     board TEXT NOT NULL DEFAULT '[ [0,0,0,0,0,0,0], [0,0,0,0,0,0,0], [0,0,0,0,0,0,0], [0,0,0,0,0,0,0], [0,0,0,0,0,0,0], [0,0,0,0,0,0,0] ]',  -- plateau de jeu
     player_turn INTEGER DEFAULT 1 ,                                                                                                          -- tour du joueur
-    last_move INTEGER
+    last_move INTEGER,
+    private_key TEXT
 );
 
 CREATE TABLE IF NOT EXISTS moves (                                                                                                          -- table des mouvements (la ou sont stocké les coups joué)
