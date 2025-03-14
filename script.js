@@ -1,75 +1,147 @@
 let currentGameId = null;
 let currentPlayer = null;
 let privateKey = null;
-let isLocalServerMaster = true; // À adapter selon la configuration
+let isLocalServerMaster = true;
 
 // Création d'une partie
 async function createGame() {
     const gameName = document.getElementById('game_name').value;
     const playerName = prompt("Entrez votre nom:");
     
-    const response = await fetch('create_game.php', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            game_name: gameName,
-            game_path: window.location.pathname,
-            player1: playerName,
-            player1_role: "human",
-            player1_path: window.location.pathname
-        })
-    });
-    
-    const data = await response.json();
-    if (data.error) {
-        alert(data.error_message);
-        return;
+    try {
+        const response = await fetch('/create_game.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                game_name: gameName,
+                game_path: window.location.pathname,
+                player1: playerName,
+                player1_role: "human",
+                player1_path: window.location.pathname
+            })
+        });
+        
+        const data = await response.json();
+        if (data.error) {
+            alert(data.error_message);
+            return;
+        }
+        
+        currentGameId = data.game_id;
+        currentPlayer = 1;
+        privateKey = data.private_key;
+        showGameBoard();
+        startGameRefresh();
+    } catch (error) {
+        console.error('Erreur création de partie:', error);
     }
-    
-    currentGameId = data.game_id;
-    currentPlayer = 1;
-    privateKey = data.private_key;
-    showGameBoard();
-    startGameRefresh();
 }
 
 // Rejoindre une partie
 async function joinGame(gameId) {
     const playerName = prompt("Entrez votre nom:");
     
-    const response = await fetch('join_game.php', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            game_id: gameId,
-            game_path: window.location.pathname,
-            player2: playerName,
-            player2_role: "human",
-            player2_path: window.location.pathname
-        })
-    });
-    
-    const data = await response.json();
-    if (data.error) {
-        alert(data.error_message);
+    try {
+        const response = await fetch('/join_game.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                game_id: gameId,
+                game_path: window.location.pathname,
+                player2: playerName,
+                player2_role: "human",
+                player2_path: window.location.pathname
+            })
+        });
+        
+        const data = await response.json();
+        if (data.error) {
+            alert(data.error_message);
+            return;
+        }
+        
+        currentGameId = gameId;
+        currentPlayer = 2;
+        privateKey = data.private_key;
+        showGameBoard();
+        startGameRefresh();
+    } catch (error) {
+        console.error('Erreur rejoindre partie:', error);
+    }
+}
+
+// Jouer un coup
+async function playMove(column) {
+    if (!privateKey) {
+        alert("Erreur d'authentification !");
         return;
     }
     
-    currentGameId = gameId;
-    currentPlayer = 2;
-    showGameBoard();
-    startGameRefresh();
+    try {
+        const response = await fetch('/play.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                game_id: currentGameId,
+                game_path: window.location.pathname,
+                player: currentPlayer,
+                column: column,
+                private_key: privateKey
+            })
+        });
+        
+        const data = await response.json();
+        if (data.error) {
+            alert(data.error_message);
+        } else {
+            privateKey = data.private_key;
+            await updateGameState();
+            refreshGameList();
+        }
+    } catch (error) {
+        console.error('Erreur jeu:', error);
+    }
 }
+
+// Rafraîchir la liste des parties
+async function refreshGameList() {
+    try {
+        const response = await fetch('/list_games.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                status: "waiting",
+                path: window.location.pathname
+            })
+        });
+        
+        const data = await response.json();
+        const list = document.getElementById('games_list');
+        list.innerHTML = '';
+        
+        data.games.forEach(game => {
+            const li = document.createElement('li');
+            li.innerHTML = `${game.game_name} (${game.player1}) - `;
+            const btn = document.createElement('button');
+            btn.textContent = 'Rejoindre';
+            btn.onclick = () => joinGame(game.game_id);
+            li.appendChild(btn);
+            list.appendChild(li);
+        });
+    } catch (error) {
+        console.error('Erreur liste parties:', error);
+    }
+}
+
+// Le reste des fonctions reste inchangé
+// (showGameBoard, startGameRefresh, updateGameState, renderBoard, updateGameControls)
 
 // Affichage du plateau
 function showGameBoard() {
     document.getElementById('game_board').style.display = 'block';
     document.querySelector('h1').scrollIntoView();
     updateGameState();
-    
-    // Force le rafraîchissement immédiat
     refreshGameList();
-    updateGameState();
 }
 
 // Rafraîchissement automatique
@@ -80,32 +152,45 @@ function startGameRefresh() {
 
 // Mise à jour de l'état du jeu
 async function updateGameState() {
-    const response = await fetch('get_game.php', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            game_id: currentGameId,
-            game_path: window.location.pathname,
-            player: currentPlayer
-        })
-    });
-    
-    const data = await response.json();
-    if (data.error) {
-        alert(data.error_message);
-        return;
+    try {
+        const response = await fetch('get_game.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                game_id: currentGameId,
+                game_path: window.location.pathname,
+                player: currentPlayer
+            })
+        });
+        
+        const data = await response.json();
+        if (data.error) {
+            alert(data.error_message);
+            return;
+        }
+        
+        renderBoard(data.board);
+        updateGameControls(data);
+        
+        // Gestion fin de partie
+        if (data.status === 'over') {
+            clearInterval(refreshInterval);
+            alert(data.winner ? `Joueur ${data.winner} a gagné !` : 'Match nul !');
+        }
+    } catch (error) {
+        console.error('Erreur mise à jour:', error);
     }
-    
-    renderBoard(data.board);
-    updateGameControls(data);
 }
 
 // Rendu du plateau
 function renderBoard(board) {
     const boardDiv = document.getElementById('board');
     boardDiv.innerHTML = '';
-    
-    // Création des colonnes cliquables
+
+    // Conversion si nécessaire
+    if (typeof board === 'string') board = JSON.parse(board);
+
+    // Sélecteur de colonnes
     const columnSelector = document.createElement('div');
     columnSelector.className = 'column-selector';
     
@@ -118,66 +203,95 @@ function renderBoard(board) {
     }
     
     boardDiv.appendChild(columnSelector);
-    
-    // Création des cellules
+
+    // Grille de jeu
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+
     for (let r = 0; r < 6; r++) {
+        const rowDiv = document.createElement('div');
+        rowDiv.className = 'row';
+
         for (let c = 0; c < 7; c++) {
             const cell = document.createElement('div');
             cell.className = 'cell';
             if (board[r][c] === 1) cell.classList.add('player1');
             if (board[r][c] === 2) cell.classList.add('player2');
-            boardDiv.appendChild(cell);
+            rowDiv.appendChild(cell);
         }
+
+        grid.appendChild(rowDiv);
     }
+
+    boardDiv.appendChild(grid);
+}
+
+// Contrôles de jeu
+function updateGameControls(data) {
+    const buttons = document.querySelectorAll('.column-btn');
+    const isPlayerTurn = (data.player_turn === currentPlayer);
+    
+    buttons.forEach(btn => {
+        btn.disabled = !isPlayerTurn || data.status !== 'play';
+    });
 }
 
 // Jouer un coup
 async function playMove(column) {
-    const response = await fetch('play.php', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            game_id: currentGameId,
-            game_path: window.location.pathname,
-            player: currentPlayer,
-            column: column,
-            private_key: privateKey
-        })
-    });
-    
-    const data = await response.json();
-    if (data.error) {
-        alert(data.error_message);
-    } else {
-        privateKey = data.private_key;
-        updateGameState();
+    try {
+        const response = await fetch('play.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                game_id: currentGameId,
+                game_path: window.location.pathname,
+                player: currentPlayer,
+                column: column,
+                private_key: privateKey
+            })
+        });
+        
+        const data = await response.json();
+        if (data.error) {
+            alert(data.error_message);
+        } else {
+            privateKey = data.private_key;
+            await updateGameState();
+            refreshGameList();
+        }
+    } catch (error) {
+        console.error('Erreur jeu:', error);
     }
 }
 
 // Liste des parties
 async function refreshGameList() {
-    const response = await fetch('list_games.php', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            status: "waiting",
-            path: window.location.pathname
-        })
-    });
-    
-    const data = await response.json();
-    const list = document.getElementById('games_list');
-    list.innerHTML = '';
-    
-    data.games.forEach(game => {
-        const li = document.createElement('li');
-        li.innerHTML = `${game.game_name} (${game.player1}) - `;
-        const btn = document.createElement('button');
-        btn.textContent = 'Rejoindre';
-        btn.onclick = () => joinGame(game.game_id);
-        li.appendChild(btn);
-        list.appendChild(li);
-    });
+    try {
+        const response = await fetch('list_games.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                status: "waiting",
+                path: window.location.pathname
+            })
+        });
+        
+        const data = await response.json();
+        const list = document.getElementById('games_list');
+        list.innerHTML = '';
+        
+        data.games.forEach(game => {
+            const li = document.createElement('li');
+            li.innerHTML = `${game.game_name} (${game.player1}) - `;
+            const btn = document.createElement('button');
+            btn.textContent = 'Rejoindre';
+            btn.onclick = () => joinGame(game.game_id);
+            li.appendChild(btn);
+            list.appendChild(li);
+        });
+    } catch (error) {
+        console.error('Erreur liste parties:', error);
+    }
 }
 
 // Initialisation
