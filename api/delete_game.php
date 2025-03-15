@@ -22,7 +22,7 @@ foreach ($required_fields as $field) {
     }
 }
 
-$db = new SQLite3("puissance4.db");
+$db = new SQLite3("../bd/puissance4.db");
 $stmt = $db->prepare("DELETE FROM games WHERE id = :game_id AND game_path = :game_path");
 $stmt->bindValue(":game_id", $data["game_id"], SQLITE3_INTEGER);
 $stmt->bindValue(":game_path", $data["game_path"], SQLITE3_TEXT);
