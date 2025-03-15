@@ -35,7 +35,7 @@ function generatePrivateKey() {
 $private_key_p1 = generatePrivateKey();
 $private_key_p2 = generatePrivateKey();
 
-$db = new SQLite3("../bd/puissance4.db");
+$db = new SQLite3("../db/puissance4.db");
 $empty_board = json_encode(array_fill(0, 6, array_fill(0, 7, 0)));
 
 $private_key = generatePrivateKey();
