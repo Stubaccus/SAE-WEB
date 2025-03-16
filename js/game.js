@@ -23,7 +23,7 @@ async function playMove(column) {
     }
     
     try {
-        const response = await fetch('/api/play.php', {
+        const response = await fetch('../api/play.php', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -36,6 +36,7 @@ async function playMove(column) {
         });
         
         const responseText = await response.text();
+        console.log("Réponse de play.php :", responseText); // Affichez la réponse brute
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -62,14 +63,14 @@ async function updateGameState() {
         };
         console.log("Données envoyées à get_game.php :", requestData);
 
-        const response = await fetch('/api/get_game.php', {
+        const response = await fetch('../api/get_game.php', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(requestData)
         });
         
         const data = await response.json();
-        console.log("Réponse de get_game.php :", data);
+        console.log("Réponse de get_game.php :", data); // Affichez la réponse
 
         if (data.error) {
             alert(data.error_message);
