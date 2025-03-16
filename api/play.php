@@ -34,8 +34,19 @@ if (!$game) {
     exit;
 }
 
-if ($data["player"] != $game["player_turn"] || $data["private_key"] !== $game["private_key"]) {
-    echo json_encode(["error" => 1, "error_message" => "Action non autorisée"]);
+// if ($data["player"] != $game["player_turn"] || $data["private_key"] !== $game["private_key"]) {
+//     echo json_encode(["error" => 1, "error_message" => "Action non autorisée"]);
+//     exit;
+// }
+// Récupérer la clé privée du joueur dans la table 'players'
+$stmt_player = $db->prepare("SELECT private_key FROM players WHERE game_id = :game_id AND player_name = :player_name");
+$stmt_player->bindValue(":game_id", $data["game_id"], SQLITE3_INTEGER);
+$stmt_player->bindValue(":player_name", $game["player" . $data["player"]], SQLITE3_TEXT); // "player1" ou "player2"
+$result_player = $stmt_player->execute();
+$player_data = $result_player->fetchArray(SQLITE3_ASSOC);
+
+if (!$player_data || $data["private_key"] !== $player_data["private_key"]) {
+    echo json_encode(["error" => 1, "error_message" => "Clé privée invalide ou joueur non trouvé"]);
     exit;
 }
 

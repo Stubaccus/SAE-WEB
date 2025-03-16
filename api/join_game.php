@@ -43,7 +43,7 @@ $stmt->bindValue(":game_id", $data["game_id"], SQLITE3_INTEGER);
 $stmt->bindValue(":player2", $data["player2"], SQLITE3_TEXT);
 $stmt->bindValue(":player2_role", $data["player2_role"], SQLITE3_TEXT);
 $stmt->bindValue(":player2_path", $data["player2_path"], SQLITE3_TEXT);
-$stmt->bindValue(":private_key", bin2hex(random_bytes(16)), SQLITE3_TEXT);
+// $stmt->bindValue(":private_key", bin2hex(random_bytes(16)), SQLITE3_TEXT);
 $result = $stmt->execute();
 
 if ($result) {
