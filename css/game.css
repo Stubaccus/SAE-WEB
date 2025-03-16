@@ -1,0 +1,46 @@
+#board {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.column-selector {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.column-btn {
+    margin: 0 5px;
+    padding: 15px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.grid {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+}
+
+.cell {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+}
+
+.cell.player1 {
+    background-color: red; 
+}
+
+.cell.player2 {
+    background-color: yellow;
+}

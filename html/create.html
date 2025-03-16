@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer une partie</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Nouvelle partie</h1>
+        <button onclick="location.href='index.html'">Retour</button>
+    </header>
+
+    <main>
+        <form id="create-game-form">
+            <div class="form-group">
+                <label>Nom de la partie :</label>
+                <input type="text" id="game-name" required>
+            </div>
+
+            <div class="form-group">
+                <label>Nom du joueur :</label>
+                <input type="text" id="player-name" name="player_name" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Type de joueur 1 :</label>
+                <select id="player1-role" name="player1_role">
+                    <option value="human" selected>Human</option>
+                    <option value="AI">IA</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Type de joueur 2 :</label>
+                <select id="player2-type">
+                    <option value="human">Human</option>
+                    <option value="AI">IA</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>API cible :</label>
+                <select id="target-api">
+                    <option value="local">Serveur local</option>
+                    <option value="remote">Serveur distant</option>
+                </select>
+            </div>
+
+            <button type="submit">Créer la partie</button>
+        </form>
+    </main>
+
+    <script src="../js/create.js"></script>
+</body>
+</html>

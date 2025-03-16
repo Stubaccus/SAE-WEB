@@ -24,7 +24,7 @@ $path_filter = $data["path"];
 
 $db = new SQLite3("../db/puissance4.db");
 
-$query = "SELECT id as game_id, status, player1, player1_role, player1_path, player2, player2_role, player2_path, player_turn FROM games WHERE game_path = :game_path";
+$query = "SELECT id as game_id, name as game_name, status, player1, player1_role, player1_path, player2, player2_role, player2_path, player_turn FROM games WHERE game_path = :game_path";
 if ($status_filter !== "all") {
     $query .= " AND status = :status";
 }

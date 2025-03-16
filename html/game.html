@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partie en cours</title>
+    <link rel="stylesheet" href="../css/game.css">
+</head>
+<body>
+    <header>
+        <div id="game-info">
+            <h2>Partie : <span id="game-title"></span></h2>
+            <div id="players">
+                <div class="player" id="player1">Joueur 1: <span></span></div>
+                <div class="player" id="player2">Joueur 2: <span></span></div>
+            </div>
+        </div>
+        <button onclick="location.href='index.html'">Quitter</button>
+    </header>
+
+    <main>
+        <div id="game-board">
+            <div id="board"></div> <!-- Ajoutez cet élément -->
+        </div>
+        
+        <div id="game-controls">
+            <div id="turn-indicator"></div>
+            <div id="error-message"></div>
+            <button id="refresh-btn">Actualiser</button>
+        </div>
+    </main>
+
+    <script src="../js/game.js"></script>
+</body>
+</html>

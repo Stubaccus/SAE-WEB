@@ -1,4 +1,5 @@
 <?php
+session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -23,6 +24,8 @@ foreach ($required_fields as $field) {
         exit;
     }
 }
+$_SESSION['player_name'] = $data['player1'];
+$game_path = "/html/create.html"; 
 
 $player2 = $data["player2"] ?? "";
 $player2_role = $data["player2_role"] ?? ($player2 !== "" ? "human" : null);

@@ -3,28 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Puissance 4</title>
+    <title>Accueil - Puissance 4</title>
     <link rel="stylesheet" href="../css/style.css">
-    <script src="../js/script.js" defer></script>
 </head>
 <body>
-    <h1>Puissance 4</h1>
-    
-    <div>
-        <h3>Créer une Partie</h3>
-        <input type="text" id="game_name" placeholder="Nom de la partie">
-        <button class="btn" onclick="createGame()">Créer</button>
-    </div>
-    
-    <div>
-        <h3>Parties Disponibles</h3>
-        <ul id="games_list"></ul>
-    </div>
-    
-    <div id="game_board" style="display: none;">
-        <h3>Plateau</h3>
-        <div id="board" class="board"></div>
-        <button class="btn" onclick="refreshGame()">Rafraîchir</button>
-    </div>
+    <header>
+        <h1>Puissance 4</h1>
+        <div id="player-info">
+            <span id="player-name"></span>
+            <button onclick="location.href='create.html'">Créer partie</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="games-list">
+            <h2>Parties disponibles</h2>
+            <div class="filter">
+                <input type="text" id="game-filter" placeholder="Filtrer les parties">
+                <button onclick="refreshGameList()">Actualiser</button>
+            </div>
+            <ul id="games_list"></ul> <!-- Liste des parties -->
+        </section>
+    </main>
+
+    <script src="../js/home.js"></script>
 </body>
 </html>
