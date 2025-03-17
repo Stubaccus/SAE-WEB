@@ -54,6 +54,6 @@ echo json_encode([
     "player2_path" => $game["player2_path"],
     "player_turn" => $game["player_turn"],
     "last_move" => $game["last_move"] ?? null,
-    "private_key" => $private_key
+    // "private_key" => $private_key
 ]);
 ?>

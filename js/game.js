@@ -31,16 +31,14 @@ async function playMove(column) {
                 game_id: currentGameId,
                 game_path: '/api/',
                 player: currentPlayer,
-                column: column,
-                private_key: privateKey
+                column: column
             })
         });
         console.log("Données envoyées à play.php :", {
             game_id: currentGameId,
             game_path: '/api/',
             player: currentPlayer,
-            column: column,
-            private_key: privateKey
+            column: column
         });
         
         const data = await response.json();
