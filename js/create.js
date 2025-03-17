@@ -14,10 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     game_name: gameName,
-                    game_path: window.location.pathname,
+                    game_path: '/api/',
                     player1: playerName,
                     player1_role: player1Role,
-                    player1_path: window.location.pathname,
+                    player1_path: '/api/',
                     player2: "",
                     player2_role: player2Type,
                     player2_path: ""

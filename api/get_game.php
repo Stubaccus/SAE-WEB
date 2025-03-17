@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 header("Content-Type: application/json");
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -38,6 +40,7 @@ $private_key = ($data["player"] == $game["player_turn"]) ? $game["private_key"] 
 
 echo json_encode([
     "error" => 0,
+    "error_message" => "",
     "game_id" => $game["id"],
     "game_name" => $game["name"],
     "game_path" => $game["game_path"],

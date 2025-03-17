@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 header("Content-Type: application/json");
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -38,17 +40,20 @@ if ($game["status"] !== "waiting") {
     exit;
 }
 
-$stmt = $db->prepare("UPDATE games SET player2 = :player2, player2_role = :player2_role, player2_path = :player2_path, status = 'play' WHERE id = :game_id");
+$private_key = bin2hex(random_bytes(16)); // Générer une nouvelle clé privée pour le joueur 2
+
+$stmt = $db->prepare("UPDATE games SET player2 = :player2, player2_role = :player2_role, player2_path = :player2_path, status = 'play', private_key = :private_key WHERE id = :game_id");
 $stmt->bindValue(":game_id", $data["game_id"], SQLITE3_INTEGER);
 $stmt->bindValue(":player2", $data["player2"], SQLITE3_TEXT);
 $stmt->bindValue(":player2_role", $data["player2_role"], SQLITE3_TEXT);
 $stmt->bindValue(":player2_path", $data["player2_path"], SQLITE3_TEXT);
-// $stmt->bindValue(":private_key", bin2hex(random_bytes(16)), SQLITE3_TEXT);
+$stmt->bindValue(":private_key", $private_key, SQLITE3_TEXT);
 $result = $stmt->execute();
 
 if ($result) {
     echo json_encode([
         "error" => 0,
+        "error_message" => "",
         "game_id" => $data["game_id"],
         "status" => "play",
         "board" => json_decode($game["board"]),
@@ -58,7 +63,8 @@ if ($result) {
         "player2" => $data["player2"],
         "player2_role" => $data["player2_role"],
         "player2_path" => $data["player2_path"],
-        "player_turn" => $game["player_turn"]
+        "player_turn" => $game["player_turn"],
+        "private_key" => $private_key
     ]);
 } else {
     echo json_encode(["error" => 1, "error_message" => "Erreur lors de la mise à jour de la partie"]);

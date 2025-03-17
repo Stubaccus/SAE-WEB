@@ -33,20 +33,9 @@ if (!$game) {
     echo json_encode(["error" => 1, "error_message" => "Partie introuvable"]);
     exit;
 }
-
-// if ($data["player"] != $game["player_turn"] || $data["private_key"] !== $game["private_key"]) {
-//     echo json_encode(["error" => 1, "error_message" => "Action non autorisée"]);
-//     exit;
-// }
-// Récupérer la clé privée du joueur dans la table 'players'
-$stmt_player = $db->prepare("SELECT private_key FROM players WHERE game_id = :game_id AND player_name = :player_name");
-$stmt_player->bindValue(":game_id", $data["game_id"], SQLITE3_INTEGER);
-$stmt_player->bindValue(":player_name", $game["player" . $data["player"]], SQLITE3_TEXT); // "player1" ou "player2"
-$result_player = $stmt_player->execute();
-$player_data = $result_player->fetchArray(SQLITE3_ASSOC);
-
-if (!$player_data || $data["private_key"] !== $player_data["private_key"]) {
-    echo json_encode(["error" => 1, "error_message" => "Clé privée invalide ou joueur non trouvé"]);
+error_log("Plateau avant le coup : " . print_r($board, true));
+if ($data["player"] != $game["player_turn"] || $data["private_key"] !== $game["private_key"]) {
+    echo json_encode(["error" => 1, "error_message" => "Action non autorisée"]);
     exit;
 }
 
@@ -63,7 +52,7 @@ for ($row = 5; $row >= 0; $row--) {
         break;
     }
 }
-
+error_log("Plateau après le coup : " . print_r($board, true));
 function check_winner($board, $player) {
     for ($r = 0; $r < 6; $r++) {
         for ($c = 0; $c < 7; $c++) {
@@ -80,7 +69,8 @@ $winner = check_winner($board, $data["player"]);
 $status = $winner ? "over" : "play";
 $next_player = $winner ? $data["player"] : ($data["player"] == 1 ? 2 : 1);
 
-$new_private_key = bin2hex(random_bytes(16));
+$new_private_key = bin2hex(random_bytes(16)); // Générer une nouvelle clé privée pour le joueur suivant
+
 $stmt = $db->prepare("UPDATE games SET board = :board, status = :status, player_turn = :next_player, last_move = :column, private_key = :private_key WHERE id = :game_id");
 $stmt->bindValue(":board", json_encode($board), SQLITE3_TEXT);
 $stmt->bindValue(":status", $status, SQLITE3_TEXT);
@@ -90,8 +80,10 @@ $stmt->bindValue(":private_key", $new_private_key, SQLITE3_TEXT);
 $stmt->bindValue(":game_id", $data["game_id"], SQLITE3_INTEGER);
 $stmt->execute();
 
+error_log("Données reçues dans play.php : " . print_r($data, true));
 echo json_encode([
     "error" => 0,
+    "error_message" => "",
     "game_id" => $game["id"],
     "status" => $status,
     "board" => $board,

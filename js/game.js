@@ -23,29 +23,32 @@ async function playMove(column) {
     }
     
     try {
-        const response = await fetch('../api/play.php', {
+        const response = await fetch('/api/play.php', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 game_id: currentGameId,
-                game_path: '/html/create.html',
+                game_path: '/api/',
                 player: currentPlayer,
                 column: column,
                 private_key: privateKey
             })
         });
+        console.log("Données envoyées à play.php :", {
+            game_id: currentGameId,
+            game_path: '/api/',
+            player: currentPlayer,
+            column: column,
+            private_key: privateKey
+        });
         
-        const responseText = await response.text();
-        console.log("Réponse de play.php :", responseText); // Affichez la réponse brute
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = JSON.parse(responseText);
+        const data = await response.json();
         
         if (data.error) {
             alert(data.error_message);
         } else {
             privateKey = data.private_key;
+            localStorage.setItem('privateKey', privateKey);
             await updateGameState();
         }
     } catch (error) {
@@ -58,7 +61,7 @@ async function updateGameState() {
     try {
         const requestData = {
             game_id: currentGameId,
-            game_path: '/html/create.html',
+            game_path: '/api/',
             player: currentPlayer
         };
         console.log("Données envoyées à get_game.php :", requestData);

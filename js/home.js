@@ -10,7 +10,7 @@ async function refreshGameList() {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 status: "waiting", 
-                path: '/html/create.html'
+                path: '/api/'
             })
         });
         
@@ -56,10 +56,10 @@ async function joinGame(gameId) {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 game_id: gameId, 
-                game_path: '/html/create.html',
+                game_path: '/api/',
                 player2: playerName,
                 player2_role: "human", 
-                player2_path: '/html/' 
+                player2_path: '/api/' 
             })
         });
         
