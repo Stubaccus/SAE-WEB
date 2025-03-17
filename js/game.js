@@ -46,7 +46,7 @@ async function playMove(column) {
         const data = await response.json();
         
         if (data.error) {
-            alert(data.error_message + "choco");
+            alert(data.error);
         } else {
             privateKey = data.private_key;
             localStorage.setItem('privateKey', privateKey);
