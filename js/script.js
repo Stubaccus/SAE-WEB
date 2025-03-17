@@ -9,7 +9,7 @@ async function createGame() {
     const playerName = prompt("Entrez votre nom:");
     
     try {
-        const response = await fetch('/api/create_game.php', {
+        const response = await fetch('../api/create_game.php', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -49,7 +49,7 @@ async function joinGame(gameId) {
     const playerName = prompt("Entrez votre nom:");
     
     try {
-        const response = await fetch('/api/join_game.php', {
+        const response = await fetch('../api/join_game.php', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -91,7 +91,7 @@ async function playMove(column) {
     }
     
     try {
-        const response = await fetch('/api/play.php', {
+        const response = await fetch('../api/play.php', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -125,7 +125,7 @@ async function playMove(column) {
 // Rafraîchir la liste des parties
 async function refreshGameList() {
     try {
-        const response = await fetch('/api/list_games.php', {
+        const response = await fetch('../api/list_games.php', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -169,7 +169,7 @@ function startGameRefresh() {
 // Mise à jour de l'état du jeu
 async function updateGameState() {
     try {
-        const response = await fetch('/api/get_game.php', {
+        const response = await fetch('../api/get_game.php', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -256,7 +256,7 @@ function updateGameControls(data) {
 // Liste des parties
 async function refreshGameList() {
     try {
-        const response = await fetch('/api/list_games.php', {
+        const response = await fetch('../api/list_games.php', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

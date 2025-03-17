@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function refreshGameList() {
     try {
-        const response = await fetch('/api/list_games.php', {
+        const response = await fetch('../api/list_games.php', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -51,7 +51,7 @@ async function joinGame(gameId) {
     }
     
     try {
-        const response = await fetch('/api/join_game.php', {
+        const response = await fetch('../api/join_game.php', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

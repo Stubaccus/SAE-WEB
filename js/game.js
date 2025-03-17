@@ -24,7 +24,7 @@ async function playMove(column) {
     // }
     
     try {
-        const response = await fetch('/api/play.php', {
+        const response = await fetch('../api/play.php', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -84,7 +84,7 @@ async function updateGameState() {
         
         if (data.status === 'over') {
             clearInterval(refreshInterval);
-            alert(data.winner ? `Joueur ${data.winner} a gagné !` : 'Match nul !');
+            alert(data.winner ? `Joueur ${data.winner} a gagné !` : 'victoire !');
         }
     } catch (error) {
         console.error('Erreur lors de la mise à jour du jeu:', error);

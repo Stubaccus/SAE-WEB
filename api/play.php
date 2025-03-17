@@ -33,7 +33,7 @@ if (!$game) {
     echo json_encode(["error" => 1, "error_message" => "Partie introuvable"]);
     exit;
 }
-error_log("Plateau avant le coup : " . print_r($board, true));
+//error_log("Plateau avant le coup : " . print_r($board, true));
 if ($data["player"] != $game["player_turn"]) {
     echo json_encode(["error" => 1, "error_message" => "Ce n'est pas votre tour"]);
     exit;
@@ -88,6 +88,6 @@ echo json_encode([
     "board" => $board, 
     "player_turn" => $next_player,
     "winner" => $winner ? $data["player"] : null,
-    "private_key" => $new_private_key
+    //"private_key" => $new_private_key
 ]);
 ?>

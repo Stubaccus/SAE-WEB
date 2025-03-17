@@ -9,15 +9,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const targetApi = document.getElementById('target-api').value;
 
         try {
-            const response = await fetch('/api/create_game.php', {
+            const response = await fetch('../api/create_game.php', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     game_name: gameName,
-                    game_path: '/api/',
+                    game_path: 'api/',
                     player1: playerName,
                     player1_role: player1Role,
-                    player1_path: '/api/',
+                    player1_path: 'api/',
                     player2: "",
                     player2_role: player2Type,
                     player2_path: ""
@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             
             const responseText = await response.text();
+            console.log("test: " + response);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }

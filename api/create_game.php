@@ -70,7 +70,7 @@ echo json_encode([
     "game_name" => $data["game_name"],
     "game_path" => $game_path,
     "status" => $status,
-    "board" => json_decode($empty_board),
+    "board" => json_encode($empty_board),
     "player1" => $data["player1"],
     "player1_role" => $data["player1_role"],
     "player1_path" => $data["player1_path"],

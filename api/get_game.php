@@ -45,7 +45,7 @@ echo json_encode([
     "game_name" => $game["name"],
     "game_path" => $game["game_path"],
     "status" => $game["status"],
-    "board" => json_decode($game["board"], true),
+    "board" => $game["board"],
     "player1" => $game["player1"],
     "player1_role" => $game["player1_role"],
     "player1_path" => $game["player1_path"],
