@@ -30,7 +30,7 @@ async function playMove(column) {
             body: JSON.stringify({
                 game_id: currentGameId,
                 game_path: '/api/',
-                player: currentPlayer,
+                player: parseInt(currentPlayer),
                 column: column
             })
         });
