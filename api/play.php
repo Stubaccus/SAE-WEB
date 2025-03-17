@@ -14,7 +14,7 @@ if (!$data) {
     exit;
 }
 
-$required_fields = ["game_id", "game_path", "player", "column", "private_key"];
+$required_fields = ["game_id", "game_path", "player", "column"];
 foreach ($required_fields as $field) {
     if (!isset($data[$field])) {
         echo json_encode(["error" => 1, "error_message" => "Données manquantes : $field"]);
