@@ -37,6 +37,7 @@
     justify-content: center;
     background-color: #fff;
     border-radius: 15vw;
+    margin: 0.075vw;
 }
 
 .cell.player1 {
