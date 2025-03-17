@@ -158,5 +158,5 @@ function updateGameControls(data) {
 
 let refreshInterval;
 function startGameRefresh() {
-    refreshInterval = setInterval(updateGameState, 5000);
+    refreshInterval = setInterval(updateGameState, 1500);
 }

@@ -21,6 +21,7 @@
 .grid {
     display: flex;
     flex-direction: column;
+    background-color: blue;
 }
 
 .row {
@@ -35,10 +36,11 @@
     align-items: center;
     justify-content: center;
     background-color: #fff;
+    border-radius: 15vw;
 }
 
 .cell.player1 {
-    background-color: red; 
+    background-color: red;
 }
 
 .cell.player2 {

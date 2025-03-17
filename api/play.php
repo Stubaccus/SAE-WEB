@@ -86,7 +86,7 @@ echo json_encode([
     "error_message" => "",
     "game_id" => $game["id"],
     "status" => $status,
-    "board" => $board,
+    "board" => $board, 
     "player_turn" => $next_player,
     "winner" => $winner ? $data["player"] : null,
     "private_key" => $new_private_key
