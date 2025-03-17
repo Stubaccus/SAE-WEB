@@ -67,7 +67,7 @@ function check_winner($board, $player) {
 
 $winner = check_winner($board, $data["player"]);
 $status = $winner ? "over" : "play";
-$next_player = $winner ? $data["player"] : ($data["player"] == 1 ? 1 : 2);
+$next_player = $winner ? $data["player"] : ($data["player"] == 1 ? 2 : 1);
 
 $new_private_key = bin2hex(random_bytes(16)); // Générer une nouvelle clé privée pour le joueur suivant
 
