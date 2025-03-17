@@ -18,10 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function playMove(column) {
-    if (!privateKey) {
-        alert("Erreur d'authentification !");
-        return;
-    }
+    // if (!privateKey) {
+    //     alert("Erreur d'authentification !");
+    //     return;
+    // }
     
     try {
         const response = await fetch('/api/play.php', {
@@ -43,13 +43,13 @@ async function playMove(column) {
         
         const data = await response.json();
         
-        if (data.error !== 1) {
-            alert(data.error_message);
-        } else {
-            privateKey = data.private_key;
-            localStorage.setItem('privateKey', privateKey);
+        // if (data.error !== 1) {
+        //     alert(data.error_message);
+        // } else {
+            // privateKey = data.private_key;
+            // localStorage.setItem('privateKey', privateKey);
             await updateGameState();
-        }
+        // }
     } catch (error) {
         console.error('Erreur lors du jeu:', error);
         alert("Erreur lors du jeu. Vérifiez la console pour plus de détails.");
