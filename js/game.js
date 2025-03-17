@@ -2,6 +2,7 @@ let currentGameId = null;
 let currentPlayer = null;
 let privateKey = null;
 
+
 document.addEventListener('DOMContentLoaded', () => {
     currentGameId = localStorage.getItem('currentGameId');
     currentPlayer = localStorage.getItem('currentPlayer');
@@ -110,10 +111,16 @@ function renderBoard(board) {
     columnSelector.className = 'column-selector';
     
     for (let c = 0; c < 7; c++) {
-        const btn = document.createElement('button');
+        var btn = document.createElement('button');
+        console.log(btn);
         btn.className = 'column-btn';
         btn.textContent = c + 1; // Affiche le numéro de la colonne
-        btn.onclick = () => playMove(c); // Associe la fonction playMove au clic
+        (function(columnIndex) {
+            btn.addEventListener("click", function (event) {
+                console.log("testons");
+                playMove(columnIndex);
+            });
+        })(c); // Associe la fonction playMove au clic
         columnSelector.appendChild(btn);
     }
     
@@ -142,7 +149,7 @@ function renderBoard(board) {
 
 function updateGameControls(data) {
     const buttons = document.querySelectorAll('.column-btn');
-    const isPlayerTurn = (data.player_turn === currentPlayer);
+    const isPlayerTurn = (data.player_turn == currentPlayer);
     
     buttons.forEach(btn => {
         btn.disabled = !isPlayerTurn || data.status !== 'play';
